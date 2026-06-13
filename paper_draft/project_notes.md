@@ -52,3 +52,18 @@ The initial definition of a stress event is:
 
 This identifies unusually high demand periods that may correspond to inventory pressure.
 
+## Initial Class Balance
+
+After defining stress events as:
+
+sales > item-specific 90th percentile
+
+the resulting class distribution was:
+
+* Normal days (0): 93.9%
+* Stress days (1): 6.1%
+
+Observation:
+
+The positive class is relatively rare but still sufficiently represented for experimentation. This suggests the initial threshold produces a meaningful distinction between typical demand and unusually high demand.
+
