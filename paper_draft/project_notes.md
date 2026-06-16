@@ -67,3 +67,13 @@ Observation:
 
 The positive class is relatively rare but still sufficiently represented for experimentation. This suggests the initial threshold produces a meaningful distinction between typical demand and unusually high demand.
 
+## Baseline Logistic Regression Results
+
+Unweighted logistic regression achieved high overall accuracy (94%) but failed to detect stress events (recall ≈ 0).
+
+Applying class balancing reduced overall accuracy to 78% but improved stress-event recall to 30%.
+
+Interpretation:
+
+This highlights the importance of class imbalance handling in supply-chain stress prediction. Traditional accuracy metrics may obscure poor rare-event performance.
+
