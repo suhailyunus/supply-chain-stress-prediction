@@ -77,3 +77,102 @@ Interpretation:
 
 This highlights the importance of class imbalance handling in supply-chain stress prediction. Traditional accuracy metrics may obscure poor rare-event performance.
 
+## Model Comparison — Baseline Experiments
+
+### Logistic Regression (Unweighted)
+
+Results:
+
+* Accuracy: 94%
+* Stress-event recall: ~0%
+
+Observation:
+
+Although overall accuracy was high, the model failed to detect rare stress events. This demonstrates that accuracy alone is not sufficient for evaluating imbalanced supply-chain risk problems.
+
+---
+
+### Logistic Regression (Balanced)
+
+Results:
+
+* Accuracy: 78%
+* Stress-event recall: 30%
+* Stress-event precision: 10%
+
+Observation:
+
+Applying class weighting significantly improved rare-event detection at the cost of lower overall accuracy. This confirms the importance of explicitly handling class imbalance.
+
+---
+
+### Random Forest (Balanced)
+
+Results:
+
+* Accuracy: 38%
+* Stress-event recall: 87%
+* Stress-event precision: 8%
+
+Observation:
+
+Random Forest dramatically improved recall, capturing most stress events, but at the expense of many false positives. This indicates a strong preference toward aggressive shortage detection.
+
+---
+
+## Business Tradeoff Interpretation
+
+In supply-chain settings:
+
+* False Positive → unnecessary extra inventory
+* False Negative → missed shortage / stockout
+
+False negatives are typically more costly than false positives.
+
+This suggests recall may be a more important optimization target than raw accuracy.
+
+---
+
+## Feature Importance Findings
+
+Random Forest feature importance:
+
+* rolling_mean_7 → 69.4%
+* sales_lag_1 → 18.9%
+* sales_lag_7 → 11.7%
+
+Interpretation:
+
+Recent rolling demand trends appear to be substantially more predictive of stress events than isolated single-day observations.
+
+This suggests that sustained elevated demand may be a stronger precursor to supply stress than abrupt one-day spikes.
+
+## Volatility Feature Experiment
+
+Added:
+
+* rolling_std_7 (7-day rolling standard deviation)
+
+Purpose:
+
+To measure short-term sales volatility and test whether instability contributes to supply stress.
+
+Results:
+
+Random Forest performance remained largely unchanged:
+
+* Stress recall: 86%
+* Stress precision: 8%
+
+However, feature importance changed substantially:
+
+* rolling_mean_7 → 48.0%
+* rolling_std_7 → 40.8%
+* sales_lag_1 → 9.3%
+* sales_lag_7 → 1.9%
+
+Interpretation:
+
+Volatility appears to be a major explanatory feature for stress-event prediction, nearly as important as recent average demand.
+
+This suggests that supply stress may be driven by both sustained demand pressure and demand instability.
