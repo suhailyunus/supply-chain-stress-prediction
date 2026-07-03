@@ -176,3 +176,61 @@ Interpretation:
 Volatility appears to be a major explanatory feature for stress-event prediction, nearly as important as recent average demand.
 
 This suggests that supply stress may be driven by both sustained demand pressure and demand instability.
+
+## Calendar Feature Enrichment
+
+Added:
+
+* is_event_day
+* is_weekend
+* SNAP indicators (CA, TX, WI)
+
+Results:
+
+Random Forest improved significantly:
+
+* Accuracy: 61%
+* Stress recall: 60%
+* Stress precision: 9%
+
+Key findings:
+
+* Weekend effect became a major predictor (12.3% importance)
+* Event days contributed minimally
+* SNAP indicators had low influence
+
+Interpretation:
+
+This suggests that supply stress may follow regular weekly behavioral patterns more strongly than formal holiday events or benefit cycles.
+
+This improves both predictive quality and business interpretability.
+
+## Price Enrichment Experiment
+
+Added:
+
+* sell_price
+* price_change_1
+
+Results:
+
+Random Forest improved:
+
+* Accuracy: 65%
+* Stress recall: 46%
+* Stress precision: 10%
+
+Feature importance:
+
+* sell_price → 44.2%
+* is_weekend → 19.8%
+* rolling_mean_7 → 12.4%
+* rolling_std_7 → 12.2%
+
+Key finding:
+
+Price became the strongest predictive feature.
+
+Interpretation:
+
+Supply stress appears to be highly associated with price level, suggesting pricing may act as a proxy for scarcity, demand intensity, or promotional behavior.
