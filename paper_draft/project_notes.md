@@ -234,3 +234,98 @@ Price became the strongest predictive feature.
 Interpretation:
 
 Supply stress appears to be highly associated with price level, suggesting pricing may act as a proxy for scarcity, demand intensity, or promotional behavior.
+
+## Discount Feature Exploration
+
+### Objective
+Investigate whether price discounts are associated with an increased likelihood of supply stress events.
+
+### Methodology
+- Created a binary feature `is_discount` using the weekly percentage price change:
+  ```python
+  is_discount = (price_pct_change_1 < 0).astype(int)
+  ```
+- A value of `1` indicates the product's price decreased compared to the previous week, while `0` indicates no discount.
+
+### Findings
+- Discounts were extremely rare, occurring in only **0.04%** of observations.
+- Despite their rarity, discounted observations exhibited a higher stress-event rate:
+  - **No Discount:** 6.08%
+  - **Discount:** 8.03%
+
+### Interpretation
+- Discounted products were approximately **32% more likely** to experience a stress event than non-discounted products.
+- This suggests an association between promotional pricing and supply stress, although it does **not** establish a causal relationship.
+- One possible explanation is that promotions increase customer demand, which may contribute to temporary supply shortages.
+
+### Conclusion
+- The `is_discount` feature was retained for model training as a business-relevant feature.
+- Although discounts occur infrequently, they may provide useful predictive information when combined with demand history, calendar features, and pricing variables.
+
+## Price Direction Analysis
+
+### Objective
+Investigate whether different types of price movements are associated with supply stress events.
+
+### Methodology
+- Created a categorical feature `price_direction` from the weekly percentage price change (`price_pct_change_1`):
+  - **Decrease**: `price_pct_change_1 < 0`
+  - **Increase**: `price_pct_change_1 > 0`
+  - **No Change**: `price_pct_change_1 == 0` or missing
+
+### Findings
+
+| Price Direction | Stress Event Rate |
+|-----------------|------------------:|
+| No Change       | 6.08% |
+| Decrease        | 8.03% |
+| Increase        | 9.89% |
+
+### Interpretation
+- Products experiencing **price increases** exhibited the highest stress-event rate (9.89%).
+- Products with **price decreases** also showed an elevated stress-event rate (8.03%) compared to products with no price changes (6.08%).
+- This suggests that **price movements, regardless of direction, are associated with periods of increased supply stress**.
+- A possible explanation is that pricing decisions often occur in response to changing market conditions such as promotions, demand surges, or inventory constraints.
+
+### Conclusion
+- Price movement appears to be a more informative signal than price level alone.
+- Future models should evaluate whether `price_direction` provides greater predictive value than separate discount or price-increase indicators.
+
+## Price Feature Evaluation
+
+### Objective
+Evaluate whether pricing information improves supply stress prediction.
+
+### Methodology
+Added two pricing-related features:
+
+- `sell_price`
+- `price_change_1`
+
+These were incorporated into the Random Forest classifier alongside historical demand, volatility, and calendar features.
+
+### Results
+
+Compared with the previous Random Forest model:
+
+- Stress-event recall improved from **46% to 60%**.
+- Stress-event F1-score increased from **0.16 to 0.18**.
+- Overall accuracy decreased from **65% to 59%**, reflecting the model's increased focus on detecting rare stress events.
+
+### Feature Importance
+
+| Feature | Relative Importance |
+|----------|-------------------:|
+| sell_price | 0.494 |
+| is_weekend | 0.175 |
+| rolling_std_7 | 0.113 |
+| rolling_mean_7 | 0.106 |
+| sales_lag_1 | 0.053 |
+| sales_lag_7 | 0.024 |
+| price_change_1 | 0.004 |
+
+### Interpretation
+
+The current selling price emerged as the strongest predictor of supply stress, accounting for nearly half of the model's feature importance. In contrast, short-term price changes contributed very little additional predictive value.
+
+These findings suggest that the absolute price level contains substantially more predictive information than recent price movements.
