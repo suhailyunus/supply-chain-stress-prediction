@@ -17,7 +17,6 @@ data/raw/*
 !data/raw/.gitkeep
 models/*.pkl
 models/*.joblib
-reports/figures/*.png
 
 # Large generated tables
 *.parquet
