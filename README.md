@@ -14,6 +14,8 @@
   <img alt="Status" src="https://img.shields.io/badge/Status-Portfolio%20Ready-brightgreen">
 </p>
 
+> A production-oriented machine learning case study demonstrating how historical retail demand signals can be transformed into an operational early-warning system for potential supply chain stress.
+
 ---
 
 ## Business Problem
@@ -22,7 +24,15 @@ Unexpected demand surges can create inventory pressure, stockouts, and lost sale
 
 The solution uses recent sales behavior, short-term volatility, calendar context, pricing, and location signals to produce a reusable risk score.
 
-> **Target caveat:** The M5 dataset does not contain verified inventory or stockout labels. The project therefore defines supply stress as sales above an item-specific 90th-percentile threshold. The model predicts a transparent high-demand proxy—not a confirmed stockout.
+## Dataset
+
+The project is built using a large-scale retail sales dataset containing historical product demand, pricing information, promotional calendar events, and multi-store geographic information.
+
+These data sources provide a realistic environment for developing machine learning models that identify elevated demand conditions associated with potential supply chain stress.
+
+The dataset is publicly available and widely used for benchmarking retail demand forecasting methods, making it suitable for demonstrating production-oriented machine learning workflows while maintaining reproducibility.
+
+> **Target caveat:** The retail sales dataset used in this project does not contain verified inventory or stockout outcomes. To approximate supply stress, the target is defined as sales exceeding an item-specific 90th percentile demand threshold. The model therefore predicts a transparent high-demand proxy rather than confirmed stockout events.
 
 ## Results at a Glance
 
@@ -63,7 +73,7 @@ At the alternative F1-maximizing threshold (**≈0.64**), precision increases to
 
 ## Evaluation Visuals
 
-The polished case-study notebook saves the main evaluation charts to `reports/figures/`.
+The `supply_stress_prediction_case_study.ipynb` notebook automatically generates the evaluation figures below during model validation.
 
 ### Precision–Recall Curve
 
@@ -89,7 +99,7 @@ Save the final SHAP beeswarm as `reports/figures/shap_summary.png`, then it will
 
 ```text
 .
-├── data/raw/                                  # M5 CSVs; ignored by Git
+├── data/raw/                                  # Retail sales, calendar, and pricing data
 ├── models/                                    # Generated model artifacts
 ├── notebooks/
 │   ├── supply_stress_prediction_case_study.ipynb
@@ -130,7 +140,7 @@ All demand features are isolated by `item_id` and `store_id`, and rolling featur
 
 ## Modeling Approach
 
-1. Reshape M5 sales from wide to long format.
+1. Reshape retail sales history into an analytical long-format dataset.
 2. Construct an item-relative high-demand target.
 3. Enrich observations with calendar and price context.
 4. Engineer temporal and geographic features.
@@ -145,13 +155,13 @@ All demand features are isolated by `item_id` and `store_id`, and rolling featur
 
 ```bash
 git clone <your-repository-url>
-cd sc-shortage-eval
+cd supply-chain-stress-prediction
 python -m venv .venv
 source .venv/bin/activate  # Windows Git Bash
 pip install -r requirements.txt
 ```
 
-Place the following files in `data/raw/`:
+Place the retail sales data files inside `data/raw/`:
 
 ```text
 sales_train_validation.csv
@@ -227,7 +237,7 @@ Example output:
 - Calibrate probabilities.
 - Compare LightGBM and CatBoost.
 - Add automated batch scoring and drift monitoring.
-- Build a Streamlit operations dashboard.
+- Develop an interactive operations dashboard for monitoring supply stress predictions.
 - Deploy the inference workflow as an API.
 
 ## Notebook
@@ -238,7 +248,12 @@ The full analytical narrative is available in:
 notebooks/supply_stress_prediction_case_study.ipynb
 ```
 
-It covers target construction, feature engineering, model selection, chronological validation, SHAP interpretation, threshold analysis, artifact persistence, and inference.
+The notebook documents the complete analytical workflow, from data preparation and feature engineering through model development, explainability, threshold selection, and production inference. It serves as the technical case study accompanying the modular Python implementation contained within the `src/` package.
+
+
+## Acknowledgements
+
+This project uses a publicly available retail sales forecasting dataset released for academic benchmarking. The engineering workflow, feature engineering strategy, model development, evaluation methodology, production pipeline, and documentation were developed independently as part of this portfolio project.
 
 ---
 
