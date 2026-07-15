@@ -1,6 +1,9 @@
-pandas
-numpy
-scikit-learn
-matplotlib
+joblib
 jupyter
+matplotlib
+nbformat
+numpy
+pandas
+scikit-learn
+shap
 xgboost

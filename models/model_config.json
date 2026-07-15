@@ -1,0 +1,7 @@
+{
+  "model_type": "XGBClassifier",
+  "positive_class": 1,
+  "positive_class_label": "Supply Stress",
+  "default_threshold": 0.5,
+  "alternative_threshold": 0.6277101635932922
+}
