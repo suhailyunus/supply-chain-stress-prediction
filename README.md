@@ -380,3 +380,16 @@ Browser → Streamlit → FastAPI → feature engineering → XGBoost → predic
 ```
 
 Use `examples/sample_input.csv` for a quick end-to-end test. Each item-store series needs at least eight chronological rows because the inference pipeline reconstructs lag and rolling features before scoring.
+
+## Continuous Integration
+
+The repository includes a GitHub Actions workflow at `.github/workflows/ci.yml`. It runs automatically for pushes and pull requests targeting `main`.
+
+The workflow performs two stages:
+
+1. **Python verification** — installs the development dependencies, compiles the Python modules, and runs the automated API tests.
+2. **Container smoke test** — validates `compose.yaml`, builds both Docker images, starts the FastAPI and Streamlit services, and checks their health endpoints.
+
+After pushing the workflow, open the repository's **Actions** tab to view the run. A successful run confirms that the tested code and both containerized services can start cleanly in a fresh environment.
+
+> This workflow provides continuous integration. Continuous deployment will be added after selecting the public hosting target for the API and web interface.
