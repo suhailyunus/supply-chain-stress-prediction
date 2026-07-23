@@ -1,0 +1,15 @@
+{
+  "threshold": 0.5,
+  "observations": [
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1800,"sales":2,"weekday":"Monday","event_name_1":null,"sell_price":3.97,"snap_CA":1,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1801,"sales":2,"weekday":"Tuesday","event_name_1":null,"sell_price":3.97,"snap_CA":0,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1802,"sales":3,"weekday":"Wednesday","event_name_1":null,"sell_price":3.97,"snap_CA":1,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1803,"sales":2,"weekday":"Thursday","event_name_1":null,"sell_price":3.97,"snap_CA":0,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1804,"sales":4,"weekday":"Friday","event_name_1":null,"sell_price":3.97,"snap_CA":1,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1805,"sales":3,"weekday":"Saturday","event_name_1":null,"sell_price":3.97,"snap_CA":0,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1806,"sales":5,"weekday":"Sunday","event_name_1":null,"sell_price":3.97,"snap_CA":1,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1807,"sales":6,"weekday":"Monday","event_name_1":null,"sell_price":3.97,"snap_CA":0,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1808,"sales":7,"weekday":"Tuesday","event_name_1":null,"sell_price":3.97,"snap_CA":1,"snap_TX":0,"snap_WI":0},
+    {"item_id":"HOBBIES_1_004","store_id":"CA_3","state_id":"CA","day_num":1809,"sales":8,"weekday":"Wednesday","event_name_1":null,"sell_price":3.97,"snap_CA":0,"snap_TX":0,"snap_WI":0}
+  ]
+}

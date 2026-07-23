@@ -260,3 +260,100 @@ This project uses a publicly available retail sales forecasting dataset released
 <p align="center">
   <strong>Built as a production-oriented machine learning portfolio project.</strong>
 </p>
+
+## Containerized Prediction API
+
+The final model is exposed through a production-style FastAPI service and packaged as a hardened Docker container. The API loads the saved XGBoost model once at startup, reuses the same feature-engineering code as training, validates incoming history, and returns probability-based risk labels.
+
+### API endpoints
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/health` | GET | Liveness and model-load status |
+| `/ready` | GET | Readiness check used by Docker |
+| `/model-info` | GET | Model type, thresholds, and feature schema |
+| `/predict` | POST | Score JSON historical observations |
+| `/predict-file` | POST | Upload and score a CSV file |
+| `/docs` | GET | Interactive Swagger documentation |
+
+### Build and run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+Open the interactive API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+Check service readiness:
+
+```bash
+curl http://localhost:8000/ready
+```
+
+Submit the included example request:
+
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  --data @examples/sample_request.json
+```
+
+Stop the service:
+
+```bash
+docker compose down
+```
+
+### Container security and reproducibility
+
+- Multi-stage image build separates dependency installation from runtime.
+- The service runs as a non-root user.
+- The container filesystem is read-only under Compose.
+- Linux capabilities are dropped and privilege escalation is disabled.
+- Model readiness is monitored through an HTTP health check.
+- Runtime dependencies are isolated in `requirements-api.txt`.
+- `.dockerignore` excludes notebooks, data, development caches, and other non-runtime files.
+
+### Run API tests locally
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+## Download Business-Ready Predictions as CSV
+
+The API includes a CSV-download endpoint for non-technical users:
+
+```text
+POST /predict-file-csv
+```
+
+From the Swagger interface at `http://localhost:8000/docs`:
+
+1. Open **POST /predict-file-csv**.
+2. Select **Try it out**.
+3. Upload `examples/sample_input.csv`.
+4. Leave the threshold blank to use the saved default of `0.50`.
+5. Select **Execute**, then use the response **Download file** link.
+
+The downloaded `predictions.csv` contains:
+
+- item and store identifiers;
+- model probability;
+- binary stress prediction;
+- operational label (`No Stress` or `Stress Risk`);
+- business severity level (`Low`, `Moderate`, `High`, or `Critical`).
+
+Risk bands are defined as:
+
+| Probability | Business risk level |
+|---:|---|
+| `< 0.30` | Low |
+| `0.30–0.59` | Moderate |
+| `0.60–0.79` | High |
+| `>= 0.80` | Critical |

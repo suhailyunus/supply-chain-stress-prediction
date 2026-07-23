@@ -1,0 +1,11 @@
+item_id,store_id,state_id,day_num,sales,weekday,event_name_1,sell_price,snap_CA,snap_TX,snap_WI
+HOBBIES_1_004,CA_3,CA,1800,2,Monday,,3.97,1,0,0
+HOBBIES_1_004,CA_3,CA,1801,2,Tuesday,,3.97,0,0,0
+HOBBIES_1_004,CA_3,CA,1802,3,Wednesday,,3.97,1,0,0
+HOBBIES_1_004,CA_3,CA,1803,2,Thursday,,3.97,0,0,0
+HOBBIES_1_004,CA_3,CA,1804,4,Friday,,3.97,1,0,0
+HOBBIES_1_004,CA_3,CA,1805,3,Saturday,,3.97,0,0,0
+HOBBIES_1_004,CA_3,CA,1806,5,Sunday,,3.97,1,0,0
+HOBBIES_1_004,CA_3,CA,1807,6,Monday,,3.97,0,0,0
+HOBBIES_1_004,CA_3,CA,1808,7,Tuesday,,3.97,1,0,0
+HOBBIES_1_004,CA_3,CA,1809,8,Wednesday,,3.97,0,0,0

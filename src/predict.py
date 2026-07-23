@@ -5,6 +5,7 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+from xgboost import XGBClassifier
 
 from src.features import prepare_model_input
 
@@ -16,9 +17,19 @@ def load_model_artifacts(
 
     directory = Path(models_dir)
 
-    model = joblib.load(
-        directory / "final_xgboost_supply_stress.pkl"
-    )
+    native_model_path = directory / "final_xgboost_supply_stress.ubj"
+    pickle_model_path = directory / "final_xgboost_supply_stress.pkl"
+
+    if native_model_path.exists():
+        model = XGBClassifier()
+        model.load_model(native_model_path)
+    elif pickle_model_path.exists():
+        model = joblib.load(pickle_model_path)
+    else:
+        raise FileNotFoundError(
+            "No supported model artifact was found. Expected "
+            f"{native_model_path.name} or {pickle_model_path.name}."
+        )
     feature_names = json.loads(
         (directory / "model_features.json").read_text(
             encoding="utf-8"

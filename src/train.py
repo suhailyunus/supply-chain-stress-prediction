@@ -115,6 +115,13 @@ def save_model_artifacts(
         directory / "final_xgboost_supply_stress.pkl",
     )
 
+    # Native XGBoost format is more portable across library versions
+    # than Python pickle serialization and is preferred by the API.
+    if hasattr(model, "save_model"):
+        model.save_model(
+            directory / "final_xgboost_supply_stress.ubj"
+        )
+
     (directory / "model_features.json").write_text(
         json.dumps(feature_names, indent=2),
         encoding="utf-8",

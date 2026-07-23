@@ -1,0 +1,32 @@
+.git
+.github
+.vscode
+.venv
+venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.ruff_cache
+.ipynb_checkpoints
+
+# Development and documentation assets are not required at runtime.
+notebooks
+paper_draft
+reports
+configs
+evaluation
+experiments
+results
+tests
+
+# Local data and large intermediates.
+data
+*.csv
+*.parquet
+*.ipynb
+
+# Docker and local clutter.
+docker-compose.yml
+compose.override.yaml
+.DS_Store
+Thumbs.db
