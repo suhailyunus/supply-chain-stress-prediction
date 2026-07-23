@@ -71,21 +71,21 @@ jobs:
 
       - name: Verify Streamlit health
         run: |
-        for attempt in {1..24}; do
-          if curl --fail --silent --show-error \
-            http://127.0.0.1:8501/_stcore/health; then
-            echo "Streamlit is healthy."
-            exit 0
-          fi
+          for attempt in {1..24}; do
+            if curl --fail --silent --show-error \
+              http://127.0.0.1:8501/_stcore/health; then
+              echo "Streamlit is healthy."
+              exit 0
+            fi
 
-          echo "Waiting for Streamlit... attempt ${attempt}/24"
-          sleep 5
-        done
+            echo "Waiting for Streamlit... attempt ${attempt}/24"
+            sleep 5
+          done
 
-        echo "Streamlit did not become healthy in time."
-        docker compose ps
-        docker compose logs
-        exit 1
+          echo "Streamlit did not become healthy in time."
+          docker compose ps
+          docker compose logs
+          exit 1
 
       - name: Show service status
         if: always()
