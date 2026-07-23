@@ -357,3 +357,26 @@ Risk bands are defined as:
 | `0.30–0.59` | Moderate |
 | `0.60–0.79` | High |
 | `>= 0.80` | Critical |
+
+## Web Interface
+
+The project includes a Streamlit interface that sits in front of the FastAPI inference service. Users can upload a CSV, preview the input, run predictions, review business-friendly risk levels, inspect the highest-risk observations, and download `predictions.csv`.
+
+Run both services with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Open:
+
+- Web application: `http://localhost:8501`
+- FastAPI documentation: `http://localhost:8000/docs`
+
+The frontend calls the API over the internal Docker network:
+
+```text
+Browser → Streamlit → FastAPI → feature engineering → XGBoost → predictions.csv
+```
+
+Use `examples/sample_input.csv` for a quick end-to-end test. Each item-store series needs at least eight chronological rows because the inference pipeline reconstructs lag and rolling features before scoring.

@@ -30,3 +30,6 @@ docker-compose.yml
 compose.override.yaml
 .DS_Store
 Thumbs.db
+
+# Include the small sample required by the Streamlit image.
+!examples/sample_input.csv
