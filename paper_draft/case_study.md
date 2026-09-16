@@ -280,6 +280,67 @@ with a regression test guarding against it coming back, is a more useful
 thing to have happened to this project than a clean first draft would
 have been.
 
+## Was the model's confidence real? Auditing calibration
+
+Every limitations section in this project said the same thing for months:
+"predicted scores are not calibrated probabilities." It sat there as an
+assumption, never actually tested — exactly the kind of thing this project
+had already learned not to trust just because it sounded right.
+
+It was tested directly, using a three-way split (train / calibration /
+final evaluation) so the number reported at the end was never touched by
+whatever fit the calibrator. The claim held up, and worse than expected:
+at both a 1,000-series and the full 30,490-series scale, a raw score of
+"0.90" corresponded to roughly 25-28% real likelihood, not 90%. Comparing
+against the *correct* reference for a rare event (not the commonly-cited
+0.25, which is only right when the event rate is 50/50) showed the honest
+picture: calibration fixed severe overconfidence, but the resulting skill
+above a trivial baseline was real yet modest — a Brier Skill Score of
+about 0.04-0.05, not the dramatic-sounding win the raw Brier improvement
+suggested on its own.
+
+The genuinely interesting part: fixing the mislabeled scores barely moved
+the business decision. A threshold chosen at the same rank position
+selected the *identical* alert set whether expressed as a raw score or a
+calibrated one — 6,922 alerts, $28,806 net, both ways, confirmed by
+running the actual code from scratch twice, not just reasoning it should
+work out that way. That's not a coincidence: calibration relabels scores,
+it doesn't reorder them, and the business decision only ever depended on
+the ordering. What changed was whether the number could be trusted as a
+stated probability — which matters for a stakeholder-facing report or an
+ensemble, and didn't matter at all for picking the threshold.
+
+The calibrated model is what's actually deployed now, not just written up
+as a finding. See the README's "Probability Calibration" section and
+`scripts/deploy_calibrated_model.py`.
+
+## Does the algorithm choice matter?
+
+XGBoost was picked at the start of this project and never tested against
+alternatives — an assumption sitting the same way the calibration claim
+was, until it also got checked. Compared against LightGBM, CatBoost, and
+a logistic regression baseline, on identical data, identical features, and
+the same three-way split used for the calibration work.
+
+XGBoost and CatBoost came out effectively tied — close enough, and
+sensitive enough to which software environment ran the comparison, that
+picking a winner between just those two would be overstating what three
+runs on one sample can show. Both were clearly, consistently ahead of
+LightGBM and logistic regression on ranking quality and calibrated
+probability quality. One genuinely interesting wrinkle: LightGBM's raw,
+*uncalibrated* scores were naturally far closer to honest than XGBoost's
+or CatBoost's — better calibrated out of the box, at the cost of weaker
+ranking. Ranking quality and calibration quality turned out to be
+separate properties a model can have independently, not two views of the
+same thing.
+
+The economic differences between all four were noise at this sample
+size — consistent with everything else this project found about small-
+scale dollar outcomes sitting near breakeven regardless of model choice.
+XGBoost's original selection held up on the metrics that matter; it just
+wasn't the dramatic "our model wins" story a less careful comparison
+might have produced.
+
 ## Honest limitations
 
 This project is explicit about what it doesn't do, both in the README and
@@ -290,9 +351,12 @@ here:
 - Precision at any usable alert volume is modest — this is a
   **prioritization aid** for a review queue, not a detection system with
   confidence.
-- Model scores are not calibrated probabilities; `scale_pos_weight` shifts
-  them upward by construction.
-- The default threshold (0.80) trades recall down to **0.03** on the full
+- Model scores were not calibrated probabilities for most of this
+  project's life — confirmed by testing it directly, not just asserted —
+  and that's now fixed and shipped (see "Was the model's confidence real?"
+  above). Every historical reference to raw scores elsewhere in this
+  project's docs predates that fix.
+- The default threshold trades recall down to **0.03** on the full
   30,490-series catalog under the corrected, store-volume-confound-free
   target definition (was 0.12 under the original, flawed one — a more
   honest number, not a regression; see "Scaling past 100 items" above).
