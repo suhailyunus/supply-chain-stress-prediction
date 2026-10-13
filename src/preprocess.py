@@ -17,7 +17,13 @@ def select_items(
     *,
     max_items: int | None = 100,
 ) -> pd.DataFrame:
-    """Optionally restrict development work to the first N unique items."""
+    """Optionally restrict development work to the first N unique items.
+
+    Review comment. This function keeps the first 100 item identifiers
+    in the file. The M5 file starts with the HOBBIES category. This
+    selection can change the results. Use items from each category, or
+    write this limit in the results table.
+    """
 
     if max_items is None:
         return sales.copy()

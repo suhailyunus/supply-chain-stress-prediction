@@ -23,6 +23,10 @@ def create_model_features(data: pd.DataFrame) -> pd.DataFrame:
     """
     Create demand, calendar, price, and location features.
 
+    Review comment. The lag features use shift(1) in each item-store
+    series. The stress threshold uses only the training days. The
+    leakage tests agree with this rule. Keep these tests.
+
     Lag and rolling calculations are isolated by item and store to
     prevent demand histories from different stores being mixed.
     """

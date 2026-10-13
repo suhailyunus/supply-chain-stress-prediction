@@ -6,6 +6,8 @@
   <strong>End-to-end machine learning pipeline for early detection of retail demand stress</strong>
 </p>
 
+> **Review comment.** The model predicts a high-sales day for one item in one store. The threshold is the training-period 90th percentile for that item in that store. The data has no stockout label. A high-sales day can occur when the store has the product. The title must agree with this target.
+
 ## At a Glance
 
 An early-warning model for retail demand stress (M5 dataset), built and hardened end to end: leakage-safe feature engineering, a FastAPI + Streamlit deployment, Docker/CI, and a dbt/Snowflake warehouse layer.
@@ -16,6 +18,8 @@ The headline isn't the model's accuracy — it's what happened when every claim 
 - **A confound an external reviewer caught**: the stress label was accidentally measuring store sales *volume*, not genuine demand stress (r=0.85 correlation with volume — corrected, now r=0.03). Verified at 100-item, 5,000-series, and the full 30,490-series catalog.
 - **A calibration audit that found the model's "90% confident" alerts were right ~27% of the time** — fixed, and now the actual deployed model, not just a write-up.
 - A formal **research paper** documenting the whole investigation, peer-reviewed through several real rounds of revision: [`paper_draft/paper.pdf`](paper_draft/paper.pdf).
+
+> **Review comment.** The paper in this repository is a draft. The revision rounds are not a journal acceptance. Write "draft" on the paper.
 
 📄 **[Read the full case study →](paper_draft/case_study.md)** — the complete investigation, in narrative form, including the bugs, the fixes, and what didn't hold up under scrutiny.
 
@@ -94,6 +98,8 @@ The dataset is publicly available and widely used for benchmarking retail demand
 
 > **Target caveat:** The retail sales dataset used in this project does not contain verified inventory or stockout outcomes. To approximate supply stress, the target is defined as sales exceeding an item-specific 90th percentile demand threshold. The model therefore predicts a transparent high-demand proxy rather than confirmed stockout events.
 
+> **Review comment.** The shipped threshold uses the item and the store. The threshold does not use the item only. The text above says "item-specific." Change that text so that the text agrees with the shipped threshold.
+
 ## Results at a Glance
 
 Stress events occur in **8.85%** of holdout observations. That base rate
@@ -105,6 +111,10 @@ is therefore not reported as a headline metric.
 the holdout covers days 1532-1913 (381,892 rows). No day appears in
 both. Every item-store series appears on both sides, so the model is
 evaluated on the future of series it has seen - not on unseen items.
+
+> **Review comment.** This table uses the 100-item set. The holdout has 381892 rows for days 1532-1913. That count agrees with 1000 series. 1000 series are 100 items in 10 stores. The full M5 catalog has 30490 series. The volume check uses the full catalog. This precision table does not use the full catalog. Write the sample size next to the table.
+>
+> The test uses the future days of series in the training data. The test does not use a new item. The test does not use a new store. Keep this limit next to the performance numbers.
 
 ### Ranking quality
 
@@ -162,6 +172,8 @@ analyst can clear the queue.
 The cost is stated plainly: **recall at this threshold is 0.12, so 29,747
 of 33,800 stress events are missed.** This model is a prioritization aid,
 not a detection system.
+
+> **Review comment.** The persistence comparison is the correct baseline. The precision changes from 0.202 to 0.269 at the same alert count. The recall at the shipped threshold is 0.12. The model misses most high-sales days. A raw score of 0.90 was correct for 27 percent of alerts. The shipped model uses isotonic calibration. The Brier score changes from 0.2097 to 0.0759. The cutoff 0.2801 keeps the same alert count as the raw cutoff 0.80. Keep these statements.
 
 As of the calibration work described later in this README, scores ARE
 genuine calibrated probabilities, not raw ranking values. This was not
